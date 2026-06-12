@@ -50,7 +50,7 @@ body {
     opacity: 1;
 }
 
-/* MAIN CONTENT */
+/* MAIN */
 .main {
     margin-left: 220px;
     width: calc(100% - 220px);
@@ -95,13 +95,14 @@ header p {
     background: #5865F2;
 }
 
-/* FEATURES */
+/* SECTIONS */
 .section {
     max-width: 1000px;
     margin: auto;
     padding: 40px 20px;
 }
 
+/* CARDS */
 .features {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -132,6 +133,22 @@ iframe {
     height: 450px;
     border-radius: 15px;
     border: none;
+}
+
+/* GENERATOR INPUTS */
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+}
+
+#deathResult {
+    margin-top: 20px;
+    font-size: 1.3rem;
+    text-align: center;
 }
 
 /* FOOTER */
@@ -172,11 +189,13 @@ footer {
     <a href="#videos">Videos</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
+    <a href="#generator">💀 Death Generator</a>
 </div>
 
 <!-- MAIN -->
 <div class="main">
 
+<!-- HERO -->
 <header id="home">
     <h1>🔥 AzmiYT</h1>
     <p>Gaming • Funny Moments • Shorts • Content Creator</p>
@@ -190,6 +209,7 @@ footer {
     </a>
 </header>
 
+<!-- FEATURES -->
 <section class="section">
     <div class="features">
         <div class="card">
@@ -214,16 +234,15 @@ footer {
     </div>
 </section>
 
+<!-- VIDEO -->
 <section class="section video" id="videos">
     <h2>📺 Latest Video</h2>
     <br>
 
-    <iframe 
-        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-        allowfullscreen>
-    </iframe>
+    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
 </section>
 
+<!-- ABOUT -->
 <section class="section" id="about">
     <h2>About</h2>
     <p>
@@ -232,16 +251,72 @@ footer {
     </p>
 </section>
 
+<!-- CONTACT -->
 <section class="section" id="contact">
     <h2>Contact</h2>
     <p>Business/Collab: your-email@example.com</p>
 </section>
 
+<!-- DEATH GENERATOR -->
+<section class="section" id="generator">
+    <h2>💀 Death Message Generator</h2>
+    <p style="opacity:0.8; margin-bottom:20px;">
+        Enter names to generate funny kill messages.
+    </p>
+
+    <div style="max-width:500px; margin:auto;">
+        <input id="victim" placeholder="Victim name">
+        <input id="killer" placeholder="Killer name (optional)">
+
+        <button onclick="generateDeath()" class="btn" style="width:100%; background:#ff0000;">
+            Generate 💀
+        </button>
+
+        <div id="deathResult"></div>
+    </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
     © 2026 AzmiYT
 </footer>
 
 </div>
+
+<!-- SCRIPT -->
+<script>
+function generateDeath() {
+    const victim = document.getElementById("victim").value || "Someone";
+    const killer = document.getElementById("killer").value;
+
+    const base = [
+        `${victim} got absolutely destroyed.`,
+        `${victim} ceased to exist.`,
+        `${victim} was eliminated instantly.`,
+        `${victim} got folded beyond recognition.`,
+        `${victim} disappeared from reality.`,
+    ];
+
+    const withKiller = [
+        `${victim} was too easy for ${killer}.`,
+        `${killer} sent ${victim} to the shadow realm.`,
+        `${victim} got slimed out by ${killer}.`,
+        `${killer} deleted ${victim} from existence.`,
+        `${victim} got folded by ${killer}.`,
+        `${killer} had no mercy on ${victim}.`
+    ];
+
+    let result;
+
+    if (killer && killer.trim() !== "") {
+        result = withKiller[Math.floor(Math.random() * withKiller.length)];
+    } else {
+        result = base[Math.floor(Math.random() * base.length)];
+    }
+
+    document.getElementById("deathResult").innerText = "💀 " + result;
+}
+</script>
 
 </body>
 </html>
