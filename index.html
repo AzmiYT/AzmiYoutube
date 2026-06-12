@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AzmiYT Kill Feed</title>
+<title>AzmiYT Kill Feed Engine</title>
 
 <style>
 * {
@@ -27,11 +27,6 @@ body {
     padding: 20px;
     position: fixed;
     height: 100vh;
-    transition: 0.3s;
-}
-
-.sidebar h2 {
-    margin-bottom: 20px;
 }
 
 .sidebar a {
@@ -44,25 +39,6 @@ body {
     opacity: 0.8;
 }
 
-.sidebar a:hover {
-    background: #1f2937;
-    opacity: 1;
-}
-
-/* MOBILE SIDEBAR */
-.toggle {
-    display: none;
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    background: #ff0000;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 8px;
-    z-index: 999;
-}
-
 /* MAIN */
 .main {
     margin-left: 220px;
@@ -70,26 +46,20 @@ body {
     padding: 20px;
 }
 
-/* HERO */
 header {
     text-align: center;
-    padding: 80px 20px 40px;
+    padding: 40px;
 }
 
-header h1 {
-    font-size: 3.5rem;
-}
-
-/* INPUTS */
-input, select {
+input, select, textarea {
     width: 100%;
     padding: 10px;
     margin: 5px 0;
     border-radius: 8px;
     border: none;
+    outline: none;
 }
 
-/* BUTTON */
 button {
     width: 100%;
     padding: 12px;
@@ -101,137 +71,205 @@ button {
     font-weight: bold;
 }
 
-button:hover {
-    background: #cc0000;
-}
-
-/* FEED CONTAINER */
-.feed {
+/* OUTPUT */
+#feed {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-/* KILL ITEM */
 .kill {
-    background: rgba(255,255,255,0.08);
     padding: 12px;
     border-radius: 10px;
+    background: rgba(255,255,255,0.08);
     animation: pop 0.3s ease;
-    border-left: 4px solid #ff0000;
 }
 
 @keyframes pop {
-    from { transform: scale(0.8); opacity: 0; }
+    from { transform: scale(0.7); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
 }
 
-/* RARITY COLORS */
-.common { border-left-color: white; }
-.rare { border-left-color: #60a5fa; }
-.legendary { border-left-color: #facc15; }
-.mythic { border-left-color: #a855f7; }
+/* RARITY */
+.rare { border-left: 4px solid #60a5fa; }
+.legendary { border-left: 4px solid #facc15; box-shadow: 0 0 10px #facc15; }
+.mythic { border-left: 4px solid #a855f7; box-shadow: 0 0 15px #a855f7; }
 
-/* MOBILE */
-@media (max-width: 700px) {
-    .sidebar {
-        left: -250px;
-        position: fixed;
-    }
-
-    .sidebar.active {
-        left: 0;
-    }
-
-    .main {
-        margin-left: 0;
-        width: 100%;
-    }
-
-    .toggle {
-        display: block;
-    }
+/* FIRE MODE */
+.fire {
+    color: #ff4d4d;
+    text-shadow: 0 0 10px red;
 }
+
+.stats {
+    margin-top: 10px;
+    opacity: 0.8;
+}
+
 </style>
 </head>
 
 <body>
 
-<button class="toggle" onclick="toggleSidebar()">☰</button>
-
-<!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
+<div class="sidebar">
     <h2>🔥 AzmiYT</h2>
-    <a href="#home">Home</a>
-    <a href="#generator">💀 Generator</a>
-    <a href="#feed">📜 Kill Feed</a>
+    <a href="#gen">Generator</a>
+    <a href="#custom">Custom Maker</a>
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
-<header id="home">
-    <h1>💀 Kill Feed System</h1>
-    <p>Live chaotic death messages</p>
+<header>
+    <h1>💀 Kill Feed Engine</h1>
+    <div class="stats">
+        Kills: <span id="kills">0</span> | Streak: <span id="streak">0</span>
+    </div>
 </header>
 
-<section id="generator">
-    <input id="victim" placeholder="Victim name">
-    <input id="killer" placeholder="Killer name (optional)">
+<!-- GENERATOR -->
+<section id="gen">
 
-    <select id="mode">
-        <option value="random">Random</option>
-        <option value="normal">Normal</option>
-        <option value="sniper">Sniper</option>
-        <option value="vehicle">Vehicle</option>
-    </select>
+<input id="victim" placeholder="Victim name">
+<input id="killer" placeholder="Killer name (optional)">
 
-    <button onclick="generate()">Generate Kill</button>
+<select id="mode">
+    <option value="random">🎲 Random</option>
+    <option value="water">🌊 Water</option>
+    <option value="sport">⚽ Sport</option>
+    <option value="air">🚁 Air</option>
+    <option value="game">🎮 Game</option>
+    <option value="cooked">🔥 Cooked</option>
+</select>
+
+<button onclick="generate()">Generate Kill</button>
+
+<div id="feed"></div>
+
 </section>
 
-<section class="feed" id="feed"></section>
+<hr style="margin:40px 0; opacity:0.2">
+
+<!-- CUSTOM MAKER -->
+<section id="custom">
+
+<h2>✍️ Custom Kill Maker</h2>
+
+<textarea id="template" placeholder="Use {victim} and {killer}"></textarea>
+
+<button onclick="customKill()">Generate Custom Kill</button>
+
+</section>
 
 <audio id="sound" src="https://www.soundjay.com/button/beep-07.mp3"></audio>
 
 </div>
 
 <script>
-function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("active");
-}
+
+let kills = 0;
+let streak = 0;
+let lastTime = 0;
+
+/* =========================
+   200+ MESSAGE POOLS
+========================= */
+
+const pools = {
+water: [
+"{victim} drowned in pure embarrassment.",
+"{victim} got deleted by a tsunami of skill.",
+"{killer} threw {victim} into the ocean.",
+"{victim} sank like a broken boat.",
+"{victim} got eaten by a sea monster.",
+"{victim} forgot how to swim in reality.",
+"{victim} was vaporized underwater.",
+"{killer} turned {victim} into fish food.",
+"{victim} got washed off the map.",
+"{victim} slipped into Atlantis permanently."
+],
+
+sport: [
+"{victim} got dunked on into oblivion.",
+"{killer} scored a goal on {victim}'s soul.",
+"{victim} got tackled out of existence.",
+"{victim} missed reality like a penalty kick.",
+"{killer} hit a home run with {victim}.",
+"{victim} got KO’d in overtime.",
+"{victim} was benched from life.",
+"{killer} broke {victim}'s ankles IRL.",
+"{victim} got slam dunked into another dimension.",
+"{victim} fouled reality and got banned."
+],
+
+air: [
+"{victim} got airstriked out of existence.",
+"{killer} dropped a jet on {victim}.",
+"{victim} got deleted by an airship crash.",
+"{victim} fell from 10,000 feet emotionally.",
+"{killer} bombed {victim} from orbit.",
+"{victim} got clipped by a flying plane.",
+"{victim} got yeeted into the skybox.",
+"{victim} forgot gravity existed.",
+"{killer} turned {victim} into sky debris.",
+"{victim} got launched into space accidentally."
+],
+
+game: [
+"{victim} got respawned… in the void.",
+"{victim} lost connection to reality.",
+"{killer} uninstalled {victim}.",
+"{victim} got lagged out of existence.",
+"{victim} got crit-hit for 9999 damage.",
+"{victim} got banned from life.",
+"{killer} speedran {victim}.",
+"{victim} failed the tutorial of life.",
+"{victim} got deleted by RNG.",
+"{victim} ran out of HP IRL."
+],
+
+cooked: [
+"{victim} got cooked beyond recognition 🔥",
+"{killer} turned {victim} into burnt toast.",
+"{victim} got deep fried in embarrassment.",
+"{victim} was roasted at 500°C.",
+"{killer} grilled {victim} to perfection.",
+"{victim} got microwaved instantly.",
+"{victim} is now extra crispy.",
+"{killer} turned {victim} into ashes.",
+"{victim} got served well done.",
+"{victim} got flame broiled out of existence."
+]
+};
+
+const all = Object.values(pools).flat();
+
+/* =========================
+   MAIN GENERATE
+========================= */
 
 function generate() {
     const victim = document.getElementById("victim").value || "Someone";
     const killer = document.getElementById("killer").value;
     const mode = document.getElementById("mode").value;
 
-    const pool = {
-        normal: [
-            `${victim} got destroyed.`,
-            `${victim} vanished instantly.`,
-            `${victim} got folded.`,
-        ],
-        sniper: [
-            `${victim} got sniped from 40ft.`,
-            `${killer} no-scoped ${victim}.`,
-        ],
-        vehicle: [
-            `${victim} got hit by a F-22.`,
-            `${killer} ran over ${victim} with a jet.`,
-        ],
-        random: [
-            `${victim} got deleted.`,
-            `${victim} got obliterated.`,
-            `${killer} erased ${victim}.`
-        ]
-    };
+    let list = mode === "random" ? all : pools[mode];
 
-    let list = pool[mode];
-    const msg = list[Math.floor(Math.random() * list.length)];
+    let msg = list[Math.floor(Math.random() * list.length)];
+
+    msg = msg.replaceAll("{victim}", victim);
+    msg = msg.replaceAll("{killer}", killer || "Unknown");
+
+    // streak system
+    let now = Date.now();
+    if (now - lastTime < 4000) streak++;
+    else streak = 1;
+    lastTime = now;
+
+    kills++;
 
     let rarity = "common";
-    const roll = Math.random();
+    let roll = Math.random();
 
     if (roll > 0.97) rarity = "mythic";
     else if (roll > 0.85) rarity = "legendary";
@@ -239,12 +277,39 @@ function generate() {
 
     const div = document.createElement("div");
     div.className = `kill ${rarity}`;
+
+    if (streak >= 5) msg = "🔥 FIRE MODE: " + msg;
+
     div.innerText = msg;
 
     document.getElementById("feed").prepend(div);
 
     document.getElementById("sound").play();
+
+    document.getElementById("kills").innerText = kills;
+    document.getElementById("streak").innerText = streak;
 }
+
+/* =========================
+   CUSTOM KILL MAKER
+========================= */
+
+function customKill() {
+    const template = document.getElementById("template").value;
+    const victim = document.getElementById("victim").value || "Someone";
+    const killer = document.getElementById("killer").value || "Unknown";
+
+    let msg = template
+        .replaceAll("{victim}", victim)
+        .replaceAll("{killer}", killer);
+
+    const div = document.createElement("div");
+    div.className = "kill rare";
+    div.innerText = msg;
+
+    document.getElementById("feed").prepend(div);
+}
+
 </script>
 
 </body>
