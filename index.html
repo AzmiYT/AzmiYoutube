@@ -1,20 +1,119 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Buildonia Cafetonia</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buildonia Cafetonia</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #5865F2, #2B2D31);
+    color: white;
+    min-height: 100vh;
+}
+
+header {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+header h1 {
+    font-size: 4rem;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 24px;
+    background: white;
+    color: #5865F2;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+}
+
+.features {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.card h2 {
+    margin-bottom: 10px;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    opacity: 0.8;
+}
+</style>
 </head>
+
 <body>
-    <h1>Welcome to Buildonia Cafetonia!</h1>
-    <p>The official website for our Discord server.</p>
 
-    <h2>Features</h2>
-    <ul>
-        <li>Friendly community</li>
-        <li>Self roles</li>
-        <li>Events and updates</li>
-        <li>Fun bots</li>
-    </ul>
+<header>
+    <h1>🏰 Buildonia Cafetonia</h1>
+    <p>A friendly Discord community for builders and gamers.</p>
 
-    <img src="YOUR_IMAGE_URL_HERE" alt="Server Logo" width="300">
+    <a class="btn" href="https://discord.gg/YOURINVITE">
+        Join Server
+    </a>
+</header>
+
+<section class="features">
+    <div class="card">
+        <h2>🎮 Gaming</h2>
+        <p>Play games with the community and join events.</p>
+    </div>
+
+    <div class="card">
+        <h2>🏷️ Self Roles</h2>
+        <p>Customize your profile with roles and colors.</p>
+    </div>
+
+    <div class="card">
+        <h2>🤖 Bots</h2>
+        <p>Fun, moderation and utility bots available.</p>
+    </div>
+
+    <div class="card">
+        <h2>📢 Updates</h2>
+        <p>Stay informed with server announcements.</p>
+    </div>
+</section>
+
+<footer>
+    © 2026 Buildonia Cafetonia
+</footer>
+
 </body>
 </html>
